@@ -232,13 +232,15 @@ async def run_bot():
 # -------------------------------
 from flask import Flask
 import os
+import threading
 
 app = Flask(__name__)
 
 @app.route("/")
-def run():
-    asyncio.run(run_bot())
-    return "Bot executed!"
+def trigger():
+    # Run bot in background so server responds immediately
+    threading.Thread(target=lambda: asyncio.run(run_bot())).start()
+    return "Bot triggered!"
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
