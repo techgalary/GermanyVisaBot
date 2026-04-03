@@ -2,7 +2,6 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install dependencies
 RUN apt-get update && apt-get install -y \
     wget curl unzip \
     && rm -rf /var/lib/apt/lists/*
@@ -10,9 +9,10 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install Playwright browsers
 RUN playwright install chromium
 
 COPY . .
+
+ENV PORT=8080
 
 CMD ["python", "germany_bot.py"]
